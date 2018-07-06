@@ -1,0 +1,100 @@
+<toaster-container [toasterconfig]="config"></toaster-container>
+<nb-card>    
+    <nb-card-header></nb-card-header>
+    <nb-card-body>
+        
+        <div class="row">
+
+            <div class="col-sm-6">
+                <div class="input-group has-identify-icon">
+                    <input type="text" [(ngModel)]="requestQuery.idMail" placeholder="ID de usuario" class="form-control" />
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="input-group has-destination-icon">
+                    <input type="text" [(ngModel)]="requestQuery.recipient" placeholder="Correo destinatario" class="form-control" />
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row">
+
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <div class="input-group">
+                        <input placeholder="Ingrese Fecha/Hora Inicio"
+                            [(ngModel)]="dateTimeRange"
+                            [selectMode]="'rangeFrom'"
+                            [owlDateTimeTrigger]="dtRange1" [owlDateTime]="dtRange1" class="form-control">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary button-icon-calendar border-radius-button" [owlDateTimeTrigger]="dtRange1" type="button">
+                                <i class="icon ion-ios-calendar icon-calendar-input"></i>
+                            </button>
+                            <owl-date-time #dtRange1></owl-date-time>
+                        </div>                    
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <div class="input-group">
+                        <input placeholder="Ingrese Fecha/Hora Fin"
+                            [(ngModel)]="dateTimeRange"
+                            [selectMode]="'rangeTo'"
+                            [owlDateTimeTrigger]="dtRange2" [owlDateTime]="dtRange2" class="form-control">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary button-icon-calendar border-radius-button" [owlDateTimeTrigger]="dtRange2" type="button">
+                                <i class="icon ion-ios-calendar icon-calendar-input"></i>
+                            </button>
+                            <owl-date-time #dtRange2></owl-date-time>
+                        </div>                    
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="dropdown ghost-dropdown" ngbDropdown>
+                    <button class="btn btn-primary btn-dropdown-error" type="button" ngbDropdownToggle>{{itemTypeError}}</button>
+                    <div class="dropdown-menu" role="menu" ngbDropdownMenu>
+                        <button class="dropdown-item" *ngFor="let item of typeErrors" (click)="SelectedTypeError(item)">{{item}}</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-sm-3">
+                <!-- empty -->
+            </div>
+
+            <div class="col-sm-3">
+                <!-- empty -->
+            </div>
+
+            <div class="col-sm-3">
+                <!--empty-->
+            </div>
+
+            <div class="col-sm-3 align-button-search ">
+                <button class="btn btn-info btn-block" (click)="SendDataSearch('1')">Buscar</button>
+            </div>
+
+        </div>
+
+    </nb-card-body>
+
+    <nb-card-footer>
+        <span>{{msgError}}</span>
+    </nb-card-footer>
+
+</nb-card>
+
+<app-table-result [listTraceData]="listTraceResp" 
+                    (emitCant)="getEmitCant($event)" 
+                    (emitPage)="getEmitPage($event)" 
+                    [searchDate]="searchDate" 
+                    [responseTime] = "responseTime">
+</app-table-result>

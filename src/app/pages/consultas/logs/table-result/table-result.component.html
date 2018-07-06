@@ -1,0 +1,67 @@
+<nb-card>  
+  <app-loader></app-loader>
+  <nb-card-header>
+    <div class="row-fluid">
+      <div class="col-sm-6 pull-left">
+        <label class="label-header-table">Resultados de busqueda: </label>
+        <div class="search-date"><span *ngIf="searchDate">Resultado al </span> {{searchDate | date: 'dd-MM-yyyy HH:mm' }} <span *ngIf="responseTime.timeTaken">Tiempo: {{responseTime.timeTaken}}s</span></div>
+      </div>
+      <div class="col-sm-3 pull-right">
+          <label>Resultado por página:</label>
+          <div class="dropdown ghost-dropdown dropdown-format" ngbDropdown>
+            <button class="btn btn-primary btn-dropdown-error" type="button" ngbDropdownToggle>{{itemCant}}</button>
+            <div class="dropdown-menu" ngbDropdownMenu>
+              <button class="dropdown-item" *ngFor="let cant of listCant" (click)="SelectedCant(cant)">{{cant}}</button>
+            </div>
+          </div>
+        </div>
+    </div>
+    
+  </nb-card-header>
+
+  <nb-card-body class="nb-card-body-modify" *ngIf="listTraceData?.data && listTraceData?.data.length > 0">
+    
+    <table class="ngb-table">
+      <thead>
+        <tr>
+          <th><i class="icon ion-ios-mail"></i></th>
+          <th scope="col">ID de transacción</th>
+          <th scope="col">Asunto</th>
+          <th scope="col">Destinatarios</th>
+          <th scope="col">Fecha</th>
+          <th scope="col">Estado</th>
+          <th scope="col">Detalle</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let trace of listTraceData.data">
+          <td><i class="icon ion-ios-mail"></i></td>
+          <td>{{trace._id}}</td>
+          <td *ngIf="trace.subject">{{trace.subject}}</td>
+          <td *ngIf="!trace.subject">- - - - - - - - - - -</td>
+          <td *ngIf="trace.recipients">{{trace.recipients[0]}}</td>
+          <td *ngIf="!trace.recipients">- - - - - - - - - - - </td>
+          <td>{{trace.date.$date | date: 'dd-MM-yyyy'}}</td>
+          <td *ngIf="trace.hasBeenSent">
+            <i class="icon ion-ios-done-all sendMail"></i>            
+          </td>
+          <td *ngIf="!trace.hasBeenSent">
+              <i class="icon ion-ios-close errorMail"></i>
+          </td>
+          <td>
+            <app-button-detail [rowData]="trace._id" ></app-button-detail>
+          </td>
+        </tr>        
+      </tbody>
+    </table>
+  </nb-card-body>
+  <nb-card-body *ngIf="!(listTraceData?.data.length > 0)">
+    <p>No hay resultados de busqueda</p>
+  </nb-card-body>
+
+  <nb-card-footer *ngIf="listTraceData?.data && listTraceData?.data.length > 0">
+    <ngb-pagination [collectionSize]="listTraceData.total" [(page)]="page" [pageSize]="itemCant" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="sendPage($event)"></ngb-pagination>
+  </nb-card-footer>
+  <nb-card-footer *ngIf="!(listTraceData?.data.length > 0)"></nb-card-footer>
+  
+</nb-card>

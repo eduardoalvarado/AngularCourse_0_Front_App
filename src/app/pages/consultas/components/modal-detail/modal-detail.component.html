@@ -1,0 +1,289 @@
+<div class="modal-header">
+  <span>{{ modalHeader }}</span>
+  <button class="close" aria-label="Close" (click)="closeModal()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="modal-body">
+  <app-loader></app-loader>
+
+    <nb-card size="large" *ngIf="!errorMsg">
+      <nb-tabset fullWidth>
+        <nb-tab tabTitle="Detalle de procesamiento">
+         
+          <nb-card class="nb-card-style" *ngFor="let detail of detailTrace?.traceGenerator">
+            <nb-card-header>
+              <div class="row">
+                <div class="col-md-8">
+                  <span class="text-card-content">
+                    <i class="icon ion-ios-finger-print"></i>
+                    <h6>ID: {{detail.id}} </h6>
+                  </span>
+                </div>
+
+                <div class="col-md-4">
+                  <span class="text-card-content">
+                    <i *ngIf="detail.error" class="icon ion-ios-close"></i>
+                    <i *ngIf="!detail.error" class="icon ion-ios-checkmark"></i>
+                    <h6 *ngIf="detail.error" class="errorProc">Error de Procesamiento</h6>
+                    <h6 *ngIf="!detail.error" class="noErrorProc">Sin error de Procesamiento</h6>
+                  </span>
+                </div>
+              </div>
+
+            </nb-card-header>
+            
+            <nb-card-body>
+              <div class="row border-content">
+                <div class="col-md-7">
+                  <span class="card-content">
+                    <label>Asunto: </label>
+                    <p>{{detail.messageEntity.subject}}</p>
+                  </span>
+                </div>
+                <div class="col-md-5">
+                  <span class="card-content">
+                    <label>Remitente: </label>
+                    <p *ngIf="detail.messageEntity.sender">{{detail.messageEntity.sender}}</p>
+                    <p *ngIf="!detail.messageEntity.sender">No existen remitentes</p>
+                  </span>
+                </div>
+              </div>
+
+              <div class="row border-content">
+                <div class="col-md-6">
+                  <span class="card-content">
+                    <label>Destinatarios: </label>
+                    <ul *ngIf="detail.messageEntity.recipients">
+                      <li *ngFor="let mail of detail.messageEntity.recipients">{{mail}}</li>
+                    </ul>
+                    <p *ngIf="!detail.messageEntity.recipients">No existen destinatarios</p>
+                  </span>
+                </div>
+
+                <div class="col-md-6">
+                    <span class="card-content">
+                      <label>Destinatarios de error: </label>
+                      <ul *ngIf="detail.messageEntity.errorRecipients?.length > 0">
+                        <li *ngFor="let mail of detail.messageEntity.errorRecipients">{{mail}}</li>
+                      </ul>
+                      <p *ngIf="!(detail.messageEntity.errorRecipients?.length > 0)">No existen destinatarios de error</p>
+                    </span>
+                  </div>
+              </div>
+
+              <div class="row border-content">
+                <div class="col-md-12">
+                  <span class="card-content">
+                    <label>Detalle de error: </label>
+                    <textarea *ngIf="detail.errorDescription" readonly name="" id="" cols="30" rows="6" class="form-control">{{detail.errorDescription}}</textarea>
+                    <p *ngIf="!detail.errorDescription">No existe descripcion de error</p>
+                  </span>
+                </div>
+              </div>
+
+              <div class="row border-content">
+                <div class="col-md-7">
+                  <span class="card-content">
+                    <label>Archivo procesado: </label>
+                    <p *ngIf="detail.originFileName">{{detail.originFileName}}</p>
+                    <p *ngIf="!detail.originFileName">No existe archivo de procesamiento, posiblemente generado por servicio REST</p>
+                  </span>
+                </div>
+                <div class="col-md-5">
+                  <span class="card-content">
+                    <label>Clase de procesamiento: </label>
+                    <p>{{detail.className}}</p>
+                  </span>
+                </div>
+              </div>
+
+            </nb-card-body>
+
+            <nb-card-footer>
+              <div class="row">
+                <div class="col-md-4">
+                  <span class="text-card-content">
+                    <i class="icon ion-ios-paper"></i>
+                    <h6>{{detail.messageEntity.codeTemplate}} </h6>
+                  </span>
+                </div>
+
+                <div class="col-md-4">
+                  <span class="text-card-content">
+                    <i class="icon ion-ios-folder"></i>
+                    <h6>Nodo: {{detail.nodeName}} </h6>
+                  </span>
+                </div>
+
+                <div class="col-md-4">
+                  <span class="text-card-content">
+                    <i class="icon ion-ios-time"></i>
+                    <h6>Fecha: {{detail.registerDate.$date | date: 'dd-MM-yyyy HH:mm'}} </h6>
+                  </span>
+                </div>
+
+              </div>
+            </nb-card-footer>
+          </nb-card>
+
+        </nb-tab>
+        
+        <!-- Detalle de envio -->
+        <nb-tab  *ngIf="detailTrace?.traceSender.length" tabTitle="Detalle de envio">
+
+            <nb-card class="nb-card-style" *ngFor="let detail of detailTrace?.traceSender">
+                <nb-card-header>
+                  <div class="row">
+                    <div class="col-md-8">
+                      <span class="text-card-content">
+                        <i class="icon ion-ios-finger-print"></i>
+                        <h6>ID: {{detail.id}} </h6>
+                      </span>
+                    </div>
+    
+                    <div class="col-md-4">
+                      <span class="text-card-content">
+                        <i *ngIf="detail.senderError" class="icon ion-ios-close"></i>
+                        <i *ngIf="!detail.senderError" class="icon ion-ios-checkmark"></i>
+                        <h6 *ngIf="detail.senderError" class="errorProc">Error de envio</h6>
+                        <h6 *ngIf="!detail.senderError" class="noErrorProc">Sin error de envio</h6>
+                      </span>
+                    </div>
+                  </div>
+    
+                </nb-card-header>
+    
+                <nb-card-body>
+    
+                  <div class="row border-content">
+                    <div class="col-md-6">
+                      <span class="card-content">
+                        <label>Archivo enviado: </label>
+                        <p *ngIf="detail.senderFilePath">{{detail.senderFilePath}}</p>
+                        <p *ngIf="!detail.senderFilePath">No existe archivo de procesamiento, posiblemente generado por servicio REST</p>
+                      </span>
+                    </div>
+                    <div class="col-md-6">
+                      <span class="card-content">
+                        <label>Clase de envio: </label>
+                        <p>{{detail.senderClass}}</p>
+                      </span>
+                    </div>
+                  </div>
+
+                  <div class="row border-content">
+                      <div class="col-md-12">
+                        <span class="card-content">
+                          <label>Detalle de error: </label>
+                          <textarea *ngIf="detail.errorDescription" readonly name="" id="" cols="30" rows="6" class="form-control">{{detail.errorDescription}}</textarea>
+                          <p *ngIf="!detail.errorDescription">No existe descripcion de error</p>
+                        </span>
+                      </div>
+                    </div>
+    
+                </nb-card-body>
+    
+                <nb-card-footer>
+                  <div class="row">                   
+    
+                    <div class="col-md-4">
+                      <span class="text-card-content">
+                        <i class="icon ion-ios-folder"></i>
+                        <h6>Nodo: {{detail.nodeName}} </h6>
+                      </span>
+                    </div>
+
+                    <div class="col-md-4">
+                     <!-- empty -->
+                    </div>
+    
+                    <div class="col-md-4">
+                      <span class="text-card-content">
+                        <i class="icon ion-ios-time"></i>
+                        <h6>Fecha: {{detail.registerDate.$date | date: 'dd-MM-yyyy HH:mm'}} </h6>
+                      </span>
+                    </div>
+    
+                  </div>
+                </nb-card-footer>
+              </nb-card>            
+
+        </nb-tab>      
+        <nb-tab *ngIf="!detailTrace?.traceSender.length" tabTitle="Detalle de envio">
+            <label>No existe detalles de envio</label>
+        </nb-tab>
+      </nb-tabset>
+    </nb-card>
+    <nb-card *ngIf="!errorMsg">
+      <label>{{errorMsg}}</label>
+    </nb-card>
+  
+</div>
+
+<div class="modal-footer">
+  <button class="btn btn-md btn-info" (click)="closeModal()">Cerrar</button>
+</div>
+
+
+
+<!--  <div class="row">
+            <div class="labels-detail col-md-6">
+              <ul>
+                <li><label>ID</label></li>
+                <li><label>Codigo Plantilla</label></li>
+                <li><label>Asunto de Mensaje</label></li>
+                <li><label>Remitente</label></li>
+                <li><label>Destinatarios</label></li>
+                <li><label>Fecha de registro</label></li>
+              </ul>
+              <ul>
+                <li><label>Origen de archivo</label></li>
+                <li><label>ClassName</label></li>
+                <li><label>Nodo de procesamiento</label></li>
+                <li><label>Error de procesamiento</label></li>
+              </ul>
+            </div>
+            <div class="col-md-6">
+              <ul>
+                <li><label>{{detailTrace?.traceGenerator[0].id}}</label></li>
+                <li><label>{{detailTrace?.traceGenerator[0].messageEntity.codeTemplate}}</label></li>
+                <li><label>{{detailTrace?.traceGenerator[0].messageEntity.subject}}</label></li>
+                <li><label>{{detailTrace?.traceGenerator[0].messageEntity.sender}}</label></li>
+                <li><label>{{detailTrace?.traceGenerator[0].messageEntity.recipients}}</label></li>
+                <li><label>{{detailTrace?.traceGenerator[0].registerDate.$date}}</label></li>
+              </ul>
+              <ul>
+                <li><label>{{detailTrace?.traceGenerator[0].originFileName}}</label></li>
+                <li><label>{{detailTrace?.traceGenerator[0].className}}</label></li>
+                <li><label>{{detailTrace?.traceGenerator[0].nodeName}}</label></li>
+                <li><label>{{detailTrace?.traceGenerator[0].error}}</label></li>
+              </ul>
+            </div>
+          </div> -->
+
+          <!-- <div class="row">
+            <div class="col-md-6">
+              <ul>
+                <li><label>ID</label></li>           
+                <li><label>Ruta de archivo</label></li>
+                <li><label>SenderClass</label></li>
+                <li><label>Nodo de envío</label></li>
+                <li><label>Error de envío</label></li>
+                <li><label>Estado de envío</label></li>
+                <li><label>Fecha de envío</label></li>
+              </ul>
+            </div>
+            <div class="col-md-6">
+              <ul>
+                  <li><label>{{detailTrace?.traceSender[0].id}}</label></li>           
+                  <li><label>{{detailTrace?.traceSender[0].sendFilePath}}</label></li>
+                  <li><label>{{detailTrace?.traceSender[0].senderClass}}</label></li>
+                  <li><label>{{detailTrace?.traceSender[0].nodeName}}</label></li>
+                  <li><label>{{detailTrace?.traceSender[0].senderError}}</label></li>
+                  <li><label>{{detailTrace?.traceSender[0].hasBeenSend}}</label></li>
+                  <li><label>{{detailTrace?.traceSender[0].registerDate.$date}}</label></li>
+                </ul>
+            </div>
+          </div> -->

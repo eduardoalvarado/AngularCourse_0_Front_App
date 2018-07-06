@@ -1,0 +1,78 @@
+@import '../../../@theme/styles/themes';
+
+@include nb-install-component() {
+    .input-group {
+        margin-bottom: 1rem;
+    }
+    .border-radius-button {
+        border-top-right-radius: 5px !important;
+        border-bottom-right-radius: 5px !important;
+    }
+
+    .input-group.has-identify-icon {
+        position: relative;
+
+        .form-control {
+            padding-left: 3rem;
+        }
+
+        &::before {
+            content: '\f17c';
+            font-family: 'Ionicons';
+            font-size: 2rem;
+            position: absolute;
+            z-index: 100;
+            left: 1rem;
+            top: 0.25rem;
+        }
+    }
+
+    .input-group.has-destination-icon {
+        position: relative;
+
+        .form-control {
+            padding-left: 3rem;
+        }
+
+        &::before {
+            content: '\f3da';
+            font-family: 'Ionicons';
+            font-size: 2rem;
+            position: absolute;
+            z-index: 100;
+            left: 1rem;
+            top: 0.25rem;
+        }
+    }
+
+    nb-card {
+        transform: translate3d(0, 0, 0);
+    }
+
+    nb-card-body {
+        overflow: visible;
+    }
+
+    .btn-dropdown-error {
+        border: 2px solid #dadfe6;
+        padding: 0.89rem 1.125rem;
+    }
+
+    .icon-calendar-input {
+        font-size: 2rem;
+        color: #4b4b4b;
+        cursor: pointer;
+    }
+    .button-icon-calendar {
+        padding: 0 0.7rem;
+    }
+    
+    .align-button-search {
+        display: flex;
+        align-items: center;
+    }
+
+    .dropdown, .dropup, .btn-group {
+        margin-bottom: 1rem;
+    }
+}

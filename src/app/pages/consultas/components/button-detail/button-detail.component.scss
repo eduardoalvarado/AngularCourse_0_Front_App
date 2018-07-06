@@ -1,0 +1,15 @@
+.ngb-button-table {
+    width: 100%;
+    border: none;
+    background: transparent;
+    font-size: 18px;
+    line-height: 20px;
+    cursor: pointer;
+    i {
+        color: #65B2FF;
+        display: inline-block;
+    }
+    &:focus {
+        outline: 0;
+    }
+}

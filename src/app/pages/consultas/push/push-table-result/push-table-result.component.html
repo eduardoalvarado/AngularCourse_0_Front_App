@@ -1,0 +1,83 @@
+<nb-card>
+  <nb-card-header>
+    <div class="row-fluid">
+      <div class="col-sm-6 pull-left">
+        <label class="label-header-table" >Resultados de Busqueda</label>
+        <p *ngIf="searchDate" style="font-size: small;font-weight: 500;">Consulta realizada al {{searchDate | date:'dd/MM/yyyy h:mm:ss a' }}</p>
+      </div>
+      <div class="col-sm-2 pull-right">
+          <div class="dropdown ghost-dropdown" ngbDropdown>
+            <button class="btn btn-primary btn-dropdown-error" type="button" ngbDropdownToggle>{{itemCant}}</button>
+            <div class="dropdown-menu" ngbDropdownMenu>
+              <button class="dropdown-item" *ngFor="let cant of listCant" (click)="onSelectedPageSize(cant)">{{cant}}</button>
+            </div>
+          </div>
+        </div>
+    </div>
+  </nb-card-header>
+
+  <nb-card-body>
+    <ngx-datatable class="material"
+[rows]="listTraceData.data"
+[columnMode]="'flex'"
+[headerHeight]="50"
+[footerHeight]="50"
+[rowHeight]="'auto'"
+[externalPaging]="true"
+[count]="listTraceData.total"
+[offset]="_pageNumber"
+[limit]="itemCant"
+(page)='onSetPage($event)' *ngIf="listTraceData.data">
+<ngx-datatable-column name="id" [flexGrow]="3">
+        <ng-template let-column="column" ngx-datatable-header-template>
+            <span >Transacción</span>
+        </ng-template>
+        <ng-template let-value="value" ngx-datatable-cell-template>
+        {{value}}
+        </ng-template>
+    </ngx-datatable-column>
+<ngx-datatable-column name="applicationId" [flexGrow]="2">
+    <ng-template let-column="column" ngx-datatable-header-template>
+        <span >Applicacion</span>
+    </ng-template>
+    <ng-template let-value="value" ngx-datatable-cell-template>
+    {{value}}
+    </ng-template>
+</ngx-datatable-column>
+<ngx-datatable-column name="clients" [flexGrow]="1">   
+    <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template>
+        <span >Clientes</span>
+    </ng-template>
+    <ng-template let-value="value" ngx-datatable-cell-template>
+        {{value}}
+    </ng-template>
+</ngx-datatable-column>
+<ngx-datatable-column name="errorState" [flexGrow]="1">
+    <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template>
+        <span>Estado</span>
+    </ng-template>
+    <ng-template let-value="value" ngx-datatable-cell-template>
+        {{value}}
+    </ng-template>
+</ngx-datatable-column>
+<ngx-datatable-column name="date" [flexGrow]="1">
+    <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template>
+        <span>Fecha/Hora</span>
+    </ng-template>
+    <ng-template let-value="value" ngx-datatable-cell-template>
+        {{value.$date| date:'dd/MM/yy HH:mm:ss'}}
+    </ng-template>
+</ngx-datatable-column>
+<ngx-datatable-column name="id" [flexGrow]="1">
+    <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template>
+        <span >Detalle</span>
+    </ng-template>
+    <ng-template let-value="value" ngx-datatable-cell-template>
+        <button (click)="onShowDetail(value)">Detalles</button>
+    </ng-template>
+</ngx-datatable-column>
+</ngx-datatable>
+
+  </nb-card-body>
+  
+</nb-card>

@@ -1,0 +1,134 @@
+<nb-card>
+    <nb-card-body>
+        <!--form #pushForm="ngForm" pushRangeDate-->
+          <div class="row">      
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label for="idTransaction">Transacción</label>
+                <div class="input-group has-identify-icon">
+                  <input type="text" [(ngModel)]="requestBody.id" id="idTransaction"  placeholder="Transacción" class="form-control" minlength="8" name="idTransaction">
+                  <div *ngIf="idTransaction.invalid" class="alert alert-danger">
+                        <div *ngIf="idTransaction.errors.minlength">
+                        Debe de tener al menos 8 caracteres
+                        </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+      
+            <div class="col-sm-3">
+              <div class="form-group">
+                <label for="lbApplication">Aplicación</label>
+                <div class="dropdown ghost-dropdown" ngbDropdown>
+                  <button class="btn btn-primary btn-dropdown-error" type="button" id="lbApplication" ngbDropdownToggle>{{itemApp.value}}</button>
+                  <div class="dropdown-menu" role="menu" ngbDropdownMenu>
+                    <button class="dropdown-item" *ngFor="let item of listApps" (click)="onSelectedApp(item)">{{item.value}}</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+      
+            <div class="col-sm-3">
+              <div class="form-group">
+                <label for="lbTipoState">Tipo</label>
+                <div class="dropdown ghost-dropdown" ngbDropdown>
+                    <button class="btn btn-primary btn-dropdown-error" type="button" id="lbTipoState" ngbDropdownToggle>{{itemTypeRequest.value}}</button>
+                    <div class="dropdown-menu" role="menu" ngbDropdownMenu>
+                      <button class="dropdown-item" *ngFor="let item of listTypeRequest" (click)="onSelectedTypeRequest(item)">{{item.value}}</button>
+                    </div>
+                  </div>
+              </div>
+            </div>
+            <div class="col-sm-2">
+                <div class="form-group">
+                    <label>Error</label>
+                    <div class="dropdown ghost-dropdown" ngbDropdown>
+                    <button class="btn btn-primary btn-dropdown-error" type="button" id="lbTipoState" ngbDropdownToggle>{{itemTypeState.value}}</button>
+                    <div class="dropdown-menu" role="menu" ngbDropdownMenu>
+                        <button class="dropdown-item" *ngFor="let item of listTypeState" (click)="onSelectedTypeState(item)">{{item.value}}</button>
+                    </div>
+                    </div>
+                </div>
+            </div>
+          </div>
+      
+          <div class="row">
+            <!--div class="col-sm-6"> 
+                <div class="form-group">
+                  <label>Rango de tiempo</label>
+                  <div class="input-group">
+                  <input placeholder="Ingrese el rango de tiempos:"
+                        [style.width]="'350px'"
+                        [(ngModel)]="dateTimeRange"
+                        [selectMode]="'range'"
+                        [owlDateTimeTrigger]="dtRange1" [owlDateTime]="dtRange1" class="form-control" style="width: auto !important;">
+                    <div class="input-group-append">
+                      <span class="btn btn-outline-secondary button-icon-calendar" [owlDateTimeTrigger]="dtRange1">
+                          <i class="icon ion-ios-calendar icon-calendar-input"></i>
+                      </span>
+                    <owl-date-time #dtRange1></owl-date-time>
+                    </div>                    
+                  </div>
+                </div>
+            </div-->
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label>Fecha/Hora Inicio</label>
+                    <div class="input-group">
+                        <input placeholder="Ingrese Fecha/Hora Inicio"
+                            [(ngModel)]="dateTimeRange"
+                            [selectMode]="'rangeFrom'"
+                            [owlDateTimeTrigger]="dtRange1" [owlDateTime]="dtRange1" class="form-control" style="width: 50px !important;" readonly id="date1" name="date1">
+                        <div class="input-group-append">
+                            <span class="btn btn-outline-secondary button-icon-calendar" [owlDateTimeTrigger]="dtRange1">
+                                <i class="icon ion-ios-calendar icon-calendar-input"></i>
+                            </span>
+                            <owl-date-time #dtRange1></owl-date-time>
+                        </div>                    
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label>Fecha/Hora Fin</label>
+                    <div class="input-group">
+                        <input placeholder="Ingrese Fecha/Hora Fin"
+                            [(ngModel)]="dateTimeRange"
+                            [selectMode]="'rangeTo'"
+                            [owlDateTimeTrigger]="dtRange2" [owlDateTime]="dtRange2" class="form-control" style="width: 50px !important;" readonly id="date2" name="date2"> 
+                        <div class="input-group-append">
+                            <span class="btn btn-outline-secondary button-icon-calendar" [owlDateTimeTrigger]="dtRange2">
+                                <i class="icon ion-ios-calendar icon-calendar-input"></i>
+                            </span>
+                            <owl-date-time #dtRange2></owl-date-time>
+                        </div>                    
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label for="clienteId">Cliente</label>
+                <div class="input-group has-person-icon">
+                    <input type="text" [(ngModel)]="requestBody.clientId" placeholder="Cliente" class="form-control" name="clienteId"/>
+                </div>    
+            </div>    
+            </div>          
+             
+            <div class="col-sm-2 align-button-search ">
+              <button class="btn btn-info btn-block" (click)="ondDataSearch()">Buscar</button>          
+            </div>
+          </div>
+        <!--/form-->  
+    </nb-card-body>      
+</nb-card>
+
+<push-table-result [listTraceData]="responseBody" [searchDate]="searchDate" [pageNumber]="requestBody.currentPage" (emitPageSize)="onEmitPageSize($event)" (emitPage)="onEmitPage($event)"></push-table-result>
+<ngx-spinner
+  bdColor="rgba(51,51,51,0.8)"
+  size="medium"
+  color="#fff"
+  loadingText="Obteniendo Datos..."
+  type="ball-clip-rotate-pulse">
+</ngx-spinner>
+

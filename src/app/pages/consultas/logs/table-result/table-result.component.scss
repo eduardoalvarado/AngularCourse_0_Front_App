@@ -1,0 +1,109 @@
+@import '../../../../@theme/styles/themes';
+
+@include nb-install-component() {
+
+    .label-header-table {
+        padding: 0.75rem 1.5rem;
+        margin: 0;
+    }
+    .nb-card-body-modify {
+        background: #ebeff5;
+    }
+    
+    nb-card {
+        transform: translate3d(0, 0, 0);
+    }
+    
+    nb-card-header {
+        .dropdown-format {
+            width: 160px;
+            display: inline-block;
+            margin-left: 10px;
+        }
+        .search-date {
+            display: inline-block;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        label {
+            display: inline-block;
+        }
+    }
+
+    .ngb-table {
+       
+        border-collapse: inherit;
+        border-spacing: 0px 10px;
+        width: 100%;
+        
+        thead {
+            border-radius: 5px;
+            background: #8E8E8E;
+            padding-bottom: 10px;
+
+            th {
+                color: #fff;
+                padding: 20px;
+                font-weight: inherit;
+    
+                &:first-child {
+                    border-top-left-radius: 15px;
+                    border-bottom-left-radius: 15px;
+                    i {
+                        font-size: 26px;
+                    }
+                }
+                &:last-child {
+                    border-top-right-radius: 15px;
+                    border-bottom-right-radius: 15px;
+                }
+            }
+        }
+        
+        tbody {
+            &:before {
+                content: "-";
+                display: block;
+                line-height: .5em;
+                color: transparent;
+            }
+
+            td {
+                color: #8E8E8E;
+                padding: 20px;
+                background: #fff;
+                margin-bottom: 5px;
+                font-size: 14px;
+                
+                .errorMail {
+                    color: #DD1144;
+                    font-size: 26px;
+                    text-align: center;
+                }
+                .sendMail {
+                    font-size: 26px;
+                    color: #5FBA7D;
+                    text-align: center;
+                }
+
+                &:first-child {
+                    border-top-left-radius: 15px;
+                    border-bottom-left-radius: 15px;
+
+                    i {
+                        font-size: 26px;
+                    }
+                }
+                &:last-child {
+                    border-top-right-radius: 15px;
+                    border-bottom-right-radius: 15px;
+                }
+
+                app-button-detail {
+                    display: block;
+                }
+            }
+        }       
+    }
+}
